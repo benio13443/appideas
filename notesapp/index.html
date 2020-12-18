@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <title></title>
+  </head>
+  <body>
+    <div id="app">
+      <h1>Note Pad</h1>
+        <form class="notes">
+          <input type="text" v-model="notes">
+          {{ notes }}
+          <button v-on:click="addNotes">Create</button>
+        </form>
+
+      <button class="deleteButton">Delete</button>
+    </div>
+    <script>
+      var app = new Vue({
+        el: "#app" ,
+        data: {
+          notes:"",
+          list:[],
+        },
+        methods: {
+          addNotes(){
+            if(this.addNotes)
+            this.list.push({
+              text: this.addNotes
+            });
+            this.addNotes = "",
+          }
+        }
+      })
+    </script>
+  </body>
+</html>
