@@ -2,34 +2,37 @@
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
-    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
     <title></title>
   </head>
   <body>
     <div id="app">
-      <h1>Note Pad</h1>
-        <form class="notes">
-          <input type="text" v-model="notes">
-          {{ notes }}
-          <button v-on:click="addNotes">Create</button>
+      <h1>My Notes</h1>
+        <form v-on:submit.prevent="addItem">
+          <input type="text" v-model="newItem">
+          <input type="submit" value="create">
         </form>
-
-      <button class="deleteButton">Delete</button>
+        <ul>
+          <li v-for="(note, index) in notes">{{ note }}
+          <div v-on:click="deleteItem(index)" class="delete"><img src="img/delete-icon.png" alt=""></div>
+          </li>
+        </ul>
     </div>
     <script>
-      var app = new Vue({
-        el: "#app" ,
+      var vm = new Vue({
+        el: "#app",
         data: {
-          notes:"",
-          list:[],
+          newItem: "",
+          notes: [
+          ]
         },
         methods: {
-          addNotes(){
-            if(this.addNotes)
-            this.list.push({
-              text: this.addNotes
-            });
-            this.addNotes = "",
+          addItem: function(){
+            this.notes.push(this.newItem);
+            this.newItem = "";
+          },
+          deleteItem: function(index){
+            this.notes.splice(index);
           }
         }
       })
