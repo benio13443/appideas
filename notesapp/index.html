@@ -26,19 +26,49 @@
         el: "#app",
         data: {
           newItem: "",
-          notes: [
-          ]
+          notes: []
+        },
+        watch:{
+          notes:{
+            handler: function(){
+              localStrage.setItem('notes', JSON.stringify(this.notes));
+            },
+            deep: true
+          }
+        },
+        mounted: function(){
+          this.notes = JSON.parse(localStrage.getItem('notes')) || [];
         },
         methods: {
           addItem: function(){
-            this.notes.push(this.newItem);
-            this.newItem = "";
+            var item = {
+              title: this.newItem,
+              isDone: false
+            };
+            this.notes.push(item);
+            this.newItem = '';
           },
           deleteItem: function(index){
-            this.notes.splice(index);
+            if(confirm('Are you sure?')){
+            this.notes.splice(index, 1);
+            }
+          },
+          purge: function(){
+            if(!confirm('Delete finished?')){
+              return;
+            }
+            this.notes=this.remaining;
           }
-        }
-      })
+          },
+          computed:{
+            remaining: function(){
+              return this.notes.filter(function(notes){
+                return !notes.isDone;
+              });
+            }
+          }
+        });
+      })();
     </script>
   </body>
 </html>
