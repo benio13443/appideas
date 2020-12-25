@@ -31,19 +31,19 @@
         watch:{
           notes:{
             handler: function(){
-              localStrage.setItem('notes', JSON.stringify(this.notes));
+              localStorage.setItem('notes', JSON.stringify(this.notes));
             },
             deep: true
           }
         },
         mounted: function(){
-          this.notes = JSON.parse(localStrage.getItem('notes')) || [];
+          this.notes = JSON.parse(localStorage.getItem('notes')) || [];
         },
         methods: {
           addItem: function(){
             var item = {
               title: this.newItem,
-              isDone: false
+              isDone: false,
             };
             this.notes.push(item);
             this.newItem = '';
@@ -68,7 +68,6 @@
             }
           }
         });
-      })();
     </script>
   </body>
 </html>
