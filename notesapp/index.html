@@ -15,7 +15,7 @@
           <input type="submit" value="create">
         </form>
         <ul>
-          <li v-for="(note, index) in notes">{{ note }}
+          <li v-for="(note, index) in notes">{{ note.index }}
           <div v-on:click="deleteItem(index)" class="delete"><img src="img/delete-icon.png" alt=""></div>
           </li>
         </ul>
@@ -43,14 +43,15 @@
           addItem: function(){
             var item = {
               title: this.newItem,
-              isDone: false,
+              isDone: false
             };
-            this.notes.push(item);
+            this.note.push(item);
             this.newItem = '';
           },
-          deleteItem: function(index){
+          deleteItem: function(){
             if(confirm('Are you sure?')){
-            this.notes.splice(index, 1);
+              this.notes.splice(index, 1);
+            };
             }
           },
           purge: function(){
@@ -59,6 +60,7 @@
             }
             this.notes=this.remaining;
           }
+          //わかりやすい動詞を使う。目的語を変える。
           },
           computed:{
             remaining: function(){

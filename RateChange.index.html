@@ -1,0 +1,32 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rate　Calculation</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+</head>
+<body>
+    <div id="exchange">
+        <form>
+            <p>為替換算機（1ドル103.12円のとき）</p>
+            <label>日本円:</label>
+            <input type="text" v-model="rate">
+            <button v-on:click="rateChange()">円→ドル</button>
+            <p>米国ドル: {{ rate }} ドル</p>
+        </form>
+    </div>
+    <script>
+        var exchange = new Vue({
+            el: "#exchange",
+            data: {
+             rate:''
+            },
+            methods:{
+                rateChange: function(){
+                    return this.rate*103.12
+                }
+            }
+        })
+
+    </script>
+</body>
+</html>

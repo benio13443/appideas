@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>データの入力</title>
+    <div id="app">
+        <div class="input-container">
+            <form class="inputArea">
+            <p>ユーザー登録</p>
+            <label>ニックネーム</label>
+            <input v-model="nickname">
+            <label>メールアドレス</label>
+            <input v-model="email">
+        </form>
+        <div class="previewArea">
+            <p>プレビュー</p>
+            <label>ニックネーム</label>
+            <input v-bind:value="nickname" readonly>
+            <label>メールアドレス</label>
+            <input v-bind:value="email" readonly>
+        </div>
+        <div class="buttonArea">
+            <button>ユーザーを登録する</button>
+        </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/vue@3.0.0/dist/vue.global.js"></script>
+    <script>
+        const app = Vue.createApp({
+            data: () => ({
+                users:[],
+                nickname:'',
+                email:'',
+            }),
+            methods: {
+                saveUser: function(){
+                    let user = {
+                        nickname: this.nickname,
+                        email: this.email,
+                    };
+                    this.users.push(user);
+                },
+            }
+        });
+        app.mount('#app')
+    </script>
+</head>
+<body>
+    
+</body>
+</html>
