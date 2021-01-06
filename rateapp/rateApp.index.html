@@ -5,28 +5,45 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
 </head>
 <body>
-    <div id="exchange">
+    <div id="app">
         <form>
-            <p>為替換算機（1ドル103.12円のとき）</p>
-            <label>日本円:</label>
-            <input type="text" v-model="rate">
-            <button v-on:click="rateChange()">円→ドル</button>
-            <p>米国ドル: {{ rate }} ドル</p>
+            <h1>Currency Converter</h1>
+            <p>1ドル103.12円のとき</p>
+            <div>
+            <p v-if="YenToDollar">USD to JPY</p>
+            <p v-else>JPY to USD</p>
+            <!-- v-ifのすぐ下にv-elseを書かないといけない -->
+            <button v-on:click="change" type="button">🇯🇵⇄🇺🇸</button>
+            </div>
+            <input type="text" v-model="price">
+            <button v-on:click="convert" type="button">Convert</button>
+            <div class="result_area">
+            <p> {{ result }} </p>
+            </div>
         </form>
     </div>
     <script>
-        var exchange = new Vue({
-            el: "#exchange",
+        var app = new Vue({
+            el: "#app",
             data: {
-             rate:''
+            YenToDollar: '',
+             price:'',
+             result:''
             },
             methods:{
-                rateChange: function(){
-                    return this.rate*103.12
+            		change: function(){
+                this.YenToDollar = !this.YenToDollar
+                },
+                //!は「〜じゃない」という否定
+                convert: function(){
+                if （this.YenToDollar===''）{
+                this.result = this.price*103.12
+                }else{
+                this.result = this.price/103.12
                 }
+              }  
             }
         })
-
     </script>
 </body>
 </html>
