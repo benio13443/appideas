@@ -31,12 +31,12 @@
              result:''
             },
             methods:{
-            		change: function(){
+            	change: function(){
                 this.YenToDollar = !this.YenToDollar
                 },
                 //!は「〜じゃない」という否定
                 convert: function(){
-                if （this.YenToDollar===''）{
+                if (this.YenToDollar===''){
                 this.result = this.price*103.12
                 }else{
                 this.result = this.price/103.12
