@@ -10,8 +10,8 @@
             <h1>Currency Converter</h1>
             <p>1ドル103.12円のとき</p>
             <div>
-            <p v-if="YenToDollar">USD to JPY</p>
-            <p v-else>JPY to USD</p>
+            <p v-if="YenToDollar">JPY to USD</p>
+            <p v-else>USD to JPY</p>
             <!-- v-ifのすぐ下にv-elseを書かないといけない -->
             <button v-on:click="change" type="button">🇯🇵⇄🇺🇸</button>
             </div>
@@ -36,10 +36,10 @@
                 },
                 //!は「〜じゃない」という否定
                 convert: function(){
-                if (this.YenToDollar===''){
-                this.result = this.price*103.12
-                }else{
+                if (this.YenToDollar){
                 this.result = this.price/103.12
+                }else{
+                this.result = this.price*103.12
                 }
               }  
             }

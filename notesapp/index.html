@@ -10,19 +10,20 @@
     <div id="app">
       <h1>My Notes</h1>
       <div class="notes-part">
-        <form v-on:submit.prevent="addItem">
+        <form v-on:submit.prevent>
           <input type="text" v-model="newItem">
-          <input type="submit" value="create">
+          <button v-on:click="addItem">create</button>
         </form>
         <ul>
-          <li v-for="(note, index) in notes">{{ note.index }}
+          <li v-for="(note, index) in notes">{{ notes.title }}
           <div v-on:click="deleteItem(index)" class="delete"><img src="img/delete-icon.png" alt=""></div>
           </li>
+          <pre> {{ $data }} </pre>
         </ul>
       </div>
     </div>
     <script>
-      var vm = new Vue({
+      var vm = new Vue({  
         el: "#app",
         data: {
           newItem: "",
@@ -31,13 +32,13 @@
         watch:{
           notes:{
             handler: function(){
-              localStorage.setItem('notes', JSON.stringify(this.notes));
+              localStrage.setItem('notes', JSON.stringify(this.notes));
             },
             deep: true
           }
         },
-        mounted: function(){
-          this.notes = JSON.parse(localStorage.getItem('notes')) || [];
+          mounted: function(){
+          this.notes = JSON.parse(localStrage.getItem('notes')) || [];
         },
         methods: {
           addItem: function(){
@@ -45,10 +46,10 @@
               title: this.newItem,
               isDone: false
             };
-            this.note.push(item);
+            this.notes.push(item);
             this.newItem = '';
           },
-          deleteItem: function(){
+          deleteItem: function(index){
             if(confirm('Are you sure?')){
               this.notes.splice(index, 1);
             };
@@ -68,7 +69,7 @@
               });
             }
           }
-      )};
+      });
     </script>
   </body>
 </html>
