@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather App</title>
+</head>
+
+<body>
+  <h1>Weather Forcast</h1>
+  <div id="app" class="weather_box">
+    <div class="choose_cities">
+      <form>
+        <input type="radio" name="city" value="tokyo" checked>
+        <label for="tokyo">Tokyo, Japan</label><br>
+        <input type="radio" name="city" value="osaka">
+        <label for="tokyo">Osaka, Japan</label><br>
+        <input type="radio" name="city" value="oita">
+        <label for="tokyo">Oita, Japan</label><br>
+        <input type="radio" name="city" value="london">
+        <label for="tokyo">London, UK</label><br>
+        <input type="radio" name="city" value="budapest">
+        <label for="tokyo">Budapest, Hungary</label><br>
+        <input type="radio" name="city" value="warsaw">
+        <label for="tokyo">Warsaw, Poland</label><br>
+        <!-- label for=? nameとvalueの違いは？-->
+        <!-- 同じグループに含むラジオボタンに、同じname文字列を割り振る（でないと、同じnameを付けないと全部選択できる状態になってしまう）
+      同じグループ内では、それぞれのラジオボタン要素の選択は、排他的になる。 -->
+        <!-- labelのテキストでなく、このvalueの文字列が送信される -->
+        <!-- <br>は改行タグ -->
+        <button type="submit" class="get_weather" v-on:click="getWeather">Get Weather</button>
+      </form>
+    </div>
+    <div class="result">
+      <p class="weather_city">{{ city }}</p>
+      <p class="weather_condition">{{ condition.main }}</p>
+      <p class="weather_temp">{{ temp | roundUp }}&deg;C</p>
+      <!-- filtersプロパティの使い方:マスタッシュ構文の中でプロパティ名をパイプ（ | ）でつなぎ、
+            フィルター名を記述することで値に処理を加えることができる -->
+      <!-- roundUp？&deg;C？多分摂氏温度表示にするという処理？ -->
+    </div>
+    <!-- <p v-if="condition.main == 'Rain'"></p>
+        <p v-else-if="condition.main == 'Clouds'"></p>
+        <p v-else-if="condition.main == 'Clear'"></p>
+        <p v-else></p> -->
+    <!-- 元々はここで天気ごとに背景画像を変える実装をしていた -->
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <!-- axiosをCDNで読み込ませている -->
+</body>
+<script>
+  var app = new Vue({
+    el: '#app',
+    data: {
+      city: null,
+      //都市名
+      temp: null,
+      //気温
+      condition: {
+        main: null
+        //天候名。なんで天候名はconditionの中に括られている？
+      }
+      //nullは空という意味
+    },
+    mounted: function () {
+      //mountedはインスタンスにDOM要素が紐づいた後に呼ばれる。
+      //インスタンスとは設計図をもとに実際に作成されたもの
+      axios.get(
+          'https://api.openweathermap.org/data/2.5/weather?q=Osaka,jp&units=metric&appid=b10746358fef8f5d35507f4fd9a84816'
+        )
+        .then(function (response) {
+          //.then()？function()の中身...
+          this.city = response.data.name
+          this.temp = response.data.main.temp
+          this.condition = response.data.weather[0]
+          //weather[0]？
+        }.bind(this))
+        //.bind？
+        .catch(function (error) {
+          console.log(error)
+          // 通信エラーが起こった際になんらかの処理が行われるよう catch を用いる
+          //.catch()？
+        })
+    },
+    filters: {
+      roundUp(value) {
+        return Math.ceil(value)
+        //filterプロパティを使って気温の小数点以下を切り上げで表示。
+      }
+      //Math.ceil()？
+    }
+  })
+</script>
+
+</html>

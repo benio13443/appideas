@@ -17,7 +17,7 @@
         <button v-on:click="addItem">create</button>
       </form>
       <ul>
-        <li v-for="(note, index) in notes">{{ notes.title }}
+        <li v-for="(note, index) in notes">{{ note.title }}
           <div v-on:click="deleteItem(index)" class="delete"><img src="img/delete-icon.png" alt=""></div>
         </li>
         <pre> {{ $data }} </pre>
@@ -36,13 +36,13 @@
       watch: {
         notes: {
           handler: function () {
-            localStrage.setItem('notes', JSON.stringify(this.notes));
+            localStrage.setItem('note', note.title);
           },
           deep: true
         }
       },
       mounted: function () {
-        this.notes = JSON.parse(localStrage.getItem('notes')) || [];
+        localStrage.getItem('note', note.title);
       },
       methods: {
         addItem: function () {
