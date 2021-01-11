@@ -1,192 +1,70 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="utf-8">
   <title>Weather App</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"></script>
 </head>
 
 <body>
-  <h1>Weather Forcast</h1>
   <div id="app">
-    <div class="choose_cities">
-      <form v-on:submit.prevent="getWeather">
-        <input type="radio" name="city" value="tokyo" checked>
-        <label for="tokyo">Tokyo, Japan</label><br>
-        <input type="radio" name="city" value="osaka">
-        <label for="tokyo">Osaka, Japan</label><br>
-        <input type="radio" name="city" value="oita">
-        <label for="tokyo">Oita, Japan</label><br>
-        <input type="radio" name="city" value="london">
-        <label for="tokyo">London, UK</label><br>
-        <input type="radio" name="city" value="budapest">
-        <label for="tokyo">Budapest, Hungary</label><br>
-        <!-- label for=? nameとvalueの違いは？-->
-        <!-- 同じグループに含むラジオボタンに、同じname文字列を割り振る（でないと、同じnameを付けないと全部選択できる状態になってしまう）
-      同じグループ内では、それぞれのラジオボタン要素の選択は、排他的になる。 -->
-        <!-- labelのテキストでなく、このvalueの文字列が送信される -->
-        <!-- <br>は改行タグ -->
-        <button type="submit" class="get_weather" v-on:click="getWeather">Get Weather</button>
-      </form>
+    <div class="weather">
+      <p class="weather_city">
+        {{ city }}
+      </p>
+      <p class="weather_info">
+        {{ condition.main }}
+      </p>
+      <p class="weather_temp">
+        {{ temp }} &deg;C
+      </p>
     </div>
-    <div class="result">
-      <p class="weather_city">{{ city }}</p>
-      <p class="weather_condition">{{ condition.main }}</p>
-      <p class="weather_temp">{{ temp | roundUp }}&deg;C</p>
-      <!-- filtersプロパティの使い方:マスタッシュ構文の中でプロパティ名をパイプ（ | ）でつなぎ、
-            フィルター名を記述することで値に処理を加えることができる -->
-      <!-- roundUp？&deg;C？多分摂氏温度表示にするという処理？ -->
-    </div>
+
+    <input type="radio" name="city" value="Tokyo" v-model="selectedCity" checked>Tokyo, Japan
+    <input type="radio" name="city" value="Osaka" v-model="selectedCity">Osaka, Japan
+    <input type="radio" name="city" value="Oita" v-model="selectedCity">Oita, Japan
+    <!-- 同じname属性の値をもつラジオボタンのグループ内で、１つにchecked属性を指定することができる -->
+    <button v-on:click.native="getWeather">Get Weather</button>
+    <!-- 子コンポーネントで親のメソッドを呼びたい時、.nativeをつける -->
   </div>
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <!-- axiosをCDNで読み込ませている -->
+  <script>
+    var app = new Vue({
+      el: '#app',
+      data: {
+        getWeather: '',
+        selectedCity: '',
+        city: null,
+        temp: null,
+        condition: {
+          main: null
+        },
+        methods: {
+          getWeather: function (event) {
+            this.selectedCity = event.srcElement.id;
+            var getUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
+            var getParam = ",jp&units=metric&appid=b10746358fef8f5d35507f4fd9a84816";
+            getUrl = getUrl + this.selectedCity + getParam;
+            axios.get(getUrl)
+              .then(function (response) {
+                this.city = response.data.name
+                this.temp = response.data.main.temp
+                this.condition = response.data.weather[0]
+                console.log(response);
+              }.bind(this))
+              .catch(function (error) {
+                console.log(error)
+              })
+            console.log(event);
+          },
+        }
+      }
+    })
+  </script>
+
+
+
 </body>
-<script>
-  var app = new Vue({
-    el: '#app',
-    data: {
-      city: "",
-      //都市名
-      temp: "",
-      //気温
-      condition: {
-        main: ""
-        //天候名。なんで天候名はconditionの中に括られている？
-        //nullは空という意味
-      }
-    },
-    methods: {
-      getWeather: function () {
-        if (getWeather === tokyo) {
-          axios.get(
-              'https://api.openweathermap.org/data/2.5/weather?q=Tokyo,jp&units=metric&appid=b10746358fef8f5d35507f4fd9a84816'
-            )
-            .then(function (response) {
-              //.then()？function()の中身...
-              this.city = response.data.name
-              this.temp = response.data.main.temp
-              this.condition = response.data.weather[0]
-              //weather[0]？
-            }.bind(this))
-            //.bind？
-            .catch(function (error) {
-              console.log(error)
-              // 通信エラーが起こった際になんらかの処理が行われるよう catch を用いる
-              //.catch()？
-            })
-        }
-      },
-      getWeather: function () {
-        if (getWeather === osaka) {
-          axios.get(
-              'https://api.openweathermap.org/data/2.5/weather?q=Osaka,jp&units=metric&appid=b10746358fef8f5d35507f4fd9a84816'
-            )
-            .then(function (response) {
-              //.then()？function()の中身...
-              this.city = response.data.name
-              this.temp = response.data.main.temp
-              this.condition = response.data.weather[0]
-              //weather[0]？
-            }.bind(this))
-            //.bind？
-            .catch(function (error) {
-              console.log(error)
-              // 通信エラーが起こった際になんらかの処理が行われるよう catch を用いる
-              //.catch()？
-            })
-        }
-      },
-      getWeather: function () {
-        if (getWeather === oita) {
-          axios.get(
-              'https://api.openweathermap.org/data/2.5/weather?q=Oita,jp&units=metric&appid=b10746358fef8f5d35507f4fd9a84816'
-            )
-            .then(function (response) {
-              //.then()？function()の中身...
-              this.city = response.data.name
-              this.temp = response.data.main.temp
-              this.condition = response.data.weather[0]
-              //weather[0]？
-            }.bind(this))
-            //.bind？
-            .catch(function (error) {
-              console.log(error)
-              // 通信エラーが起こった際になんらかの処理が行われるよう catch を用いる
-              //.catch()？
-            })
-        }
-      },
-      getWeather: function () {
-        if (getWeather === london) {
-          axios.get(
-              'https://api.openweathermap.org/data/2.5/weather?q=London,jp&units=metric&appid=b10746358fef8f5d35507f4fd9a84816'
-            )
-            .then(function (response) {
-              //.then()？function()の中身...
-              this.city = response.data.name
-              this.temp = response.data.main.temp
-              this.condition = response.data.weather[0]
-              //weather[0]？
-            }.bind(this))
-            //.bind？
-            .catch(function (error) {
-              console.log(error)
-              // 通信エラーが起こった際になんらかの処理が行われるよう catch を用いる
-              //.catch()？
-            })
-        }
-      },
-      getWeather: function () {
-        if (getWeather === budapest) {
-          axios.get(
-              'https://api.openweathermap.org/data/2.5/weather?q=Budapest,jp&units=metric&appid=b10746358fef8f5d35507f4fd9a84816'
-            )
-            .then(function (response) {
-              //.then()？function()の中身...
-              this.city = response.data.name
-              this.temp = response.data.main.temp
-              this.condition = response.data.weather[0]
-              //weather[0]？
-            }.bind(this))
-            //.bind？
-            .catch(function (error) {
-              console.log(error)
-              // 通信エラーが起こった際になんらかの処理が行われるよう catch を用いる
-              //.catch()？
-            })
-        }
-      },
-    },
-    // mounted: function () {
-    //mountedはインスタンスにDOM要素が紐づいた後に呼ばれる。
-    //インスタンスとは設計図をもとに実際に作成されたもの
-    // axios.get(
-    //     'https://api.openweathermap.org/data/2.5/weather?q=Tokyo,jp&units=metric&appid=b10746358fef8f5d35507f4fd9a84816'
-    //   )
-    //   .then(function (response) {
-    //     //.then()？function()の中身...
-    //     this.city = response.data.name
-    //     this.temp = response.data.main.temp
-    //     this.condition = response.data.weather[0]
-    //     //weather[0]？
-    //   }.bind(this))
-    //   //.bind？
-    //   .catch(function (error) {
-    //     console.log(error)
-    //     // 通信エラーが起こった際になんらかの処理が行われるよう catch を用いる
-    //     //.catch()？
-    //   })
-    // },
-    filters: {
-      roundUp(value) {
-        return Math.ceil(value)
-        //filterプロパティを使って気温の小数点以下を切り上げで表示。
-      }
-      //Math.ceil()？
-    }
-  })
-</script>
 
 </html>

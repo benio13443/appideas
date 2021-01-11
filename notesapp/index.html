@@ -34,8 +34,8 @@
         ]
       },
       watch: {
-        notes: {
-          deep: true
+        notes: function () {
+          // notesの値が変わったときに動く関数
         }
       },
       mounted: function () {
@@ -58,8 +58,8 @@
           };
         },
         setItems() {
-        localStorage.setItem('notes', JSON.stringify(this.notes));
-      }
+          localStorage.setItem('notes', JSON.stringify(this.notes));
+        }
       },
       purge: function () {
         if (!confirm('Delete finished?')) {
