@@ -10,7 +10,8 @@
 
 <body>
   <div id="app">
-    <div class="weather">
+    <div class="weather" v-if="getWeather">
+      <!-- getWeatherが呼ばれたら天気を表示する -->
       <p class="weather_city">
         {{ city }}
       </p>
@@ -18,7 +19,7 @@
         {{ condition.main }}
       </p>
       <p class="weather_temp">
-        {{ temp }} &deg;C
+        {{ temp }}&deg;C
       </p>
     </div>
 
@@ -28,6 +29,7 @@
     <!-- 同じname属性の値をもつラジオボタンのグループ内で、１つにchecked属性を指定することができる -->
     <button v-on:click.native="getWeather">Get Weather</button>
     <!-- 子コンポーネントで親のメソッドを呼びたい時、.nativeをつける -->
+    <pre> {{ $data }} </pre>
   </div>
   <script>
     var app = new Vue({
