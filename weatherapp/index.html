@@ -27,7 +27,7 @@
     <input type="radio" name="city" value="Osaka" v-model="selectedCity">Osaka, Japan
     <input type="radio" name="city" value="Oita" v-model="selectedCity">Oita, Japan
     <!-- 同じname属性の値をもつラジオボタンのグループ内で、１つにchecked属性を指定することができる -->
-    <button v-on:click.native="getWeather">Get Weather</button>
+    <button v-on:click.native="getWeather()">Get Weather</button>
     <!-- 子コンポーネントで親のメソッドを呼びたい時、.nativeをつける -->
     <pre> {{ $data }} </pre>
   </div>
@@ -35,13 +35,13 @@
     var app = new Vue({
       el: '#app',
       data: {
-        getWeather: '',
         selectedCity: '',
         city: null,
         temp: null,
         condition: {
           main: null
         },
+      },
         methods: {
           getWeather: function (event) {
             this.selectedCity = event.srcElement.id;
@@ -61,7 +61,6 @@
             console.log(event);
           },
         }
-      }
     })
   </script>
 
