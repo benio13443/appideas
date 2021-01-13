@@ -4,8 +4,6 @@
 <head>
   <meta charset="utf-8">
   <title>Weather App</title>
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"></script>
 </head>
 
 <body>
@@ -23,44 +21,46 @@
       </p>
     </div>
 
-    <input type="radio" name="city" value="Tokyo" v-model="selectedCity" checked>Tokyo, Japan
-    <input type="radio" name="city" value="Osaka" v-model="selectedCity">Osaka, Japan
-    <input type="radio" name="city" value="Oita" v-model="selectedCity">Oita, Japan
+    <input type="radio" name="city" value="tokyo" v-model="selectedCity" checked>Tokyo, Japan
+    <input type="radio" name="city" value="osaka" v-model="selectedCity">Osaka, Japan
+    <input type="radio" name="city" value="oita" v-model="selectedCity">Oita, Japan
     <!-- 同じname属性の値をもつラジオボタンのグループ内で、１つにchecked属性を指定することができる -->
-    <button v-on:click.native="getWeather()">Get Weather</button>
+    <button v-on:click="getWeather()">Get Weather</button>
     <!-- 子コンポーネントで親のメソッドを呼びたい時、.nativeをつける -->
+    <!-- methodsのときは（）をつける -->
     <pre> {{ $data }} </pre>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"></script>
   <script>
     var app = new Vue({
       el: '#app',
       data: {
         selectedCity: '',
-        city: null,
+        city: '',
         temp: null,
         condition: {
           main: null
         },
       },
-        methods: {
-          getWeather: function (event) {
-            this.selectedCity = event.srcElement.id;
-            var getUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
-            var getParam = ",jp&units=metric&appid=b10746358fef8f5d35507f4fd9a84816";
-            getUrl = getUrl + this.selectedCity + getParam;
-            axios.get(getUrl)
-              .then(function (response) {
-                this.city = response.data.name
-                this.temp = response.data.main.temp
-                this.condition = response.data.weather[0]
-                console.log(response);
-              }.bind(this))
-              .catch(function (error) {
-                console.log(error)
-              })
-            console.log(event);
-          },
+      methods: {
+        getWeather: function (event) {
+          var getUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
+          var getParam = ",jp&units=metric&appid=b10746358fef8f5d35507f4fd9a84816";
+          getUrl = getUrl + this.selectedCity + getParam;
+          axios.get(getUrl)
+            .then(function (response) {
+              this.city = response.data.name
+              this.temp = response.data.main.temp
+              this.condition = response.data.weather[0]
+              console.log(response);
+            }.bind(this))
+            .catch(function (error) {
+              console.log(error)
+            })
+          console.log(event);
         }
+      }
     })
   </script>
 
