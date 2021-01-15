@@ -4,11 +4,26 @@
 <head>
   <meta charset="utf-8">
   <title>Weather App</title>
+  <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
 </head>
 
 <body>
   <div id="app">
-    <div class="weather" v-if="getWeather">
+    <div class="select_city">
+    <h1>Weather App</h1>
+    <select v-model="selectedCity">
+      <label for="tokyo"></label><option disabled value="">Select</option></label>
+      <option value="tokyo">Tokyo</option>
+      <option value="osaka">Osaka</option>
+      <option value="fukuoka">Fukuoka</option>
+      <option value="oita">Oita</option>
+      <option value="okinawa">Okinawa</option>
+    </select>
+    <button v-on:click="getWeather()">Get Weather</button>
+    <!-- methodsのときは（）をつける -->
+    </div>
+
+    <div class="weather">
       <!-- getWeatherが呼ばれたら天気を表示する -->
       <p class="weather_city">
         {{ city }}
@@ -16,18 +31,10 @@
       <p class="weather_info">
         {{ condition.main }}
       </p>
-      <p class="weather_temp">
-        {{ temp }}&deg;C
+      <p class="weather_temp" v-if="getWeather">
+        {{ temp }}&#8451;
       </p>
     </div>
-
-    <input type="radio" name="city" value="tokyo" v-model="selectedCity" checked>Tokyo, Japan
-    <input type="radio" name="city" value="osaka" v-model="selectedCity">Osaka, Japan
-    <input type="radio" name="city" value="oita" v-model="selectedCity">Oita, Japan
-    <!-- 同じname属性の値をもつラジオボタンのグループ内で、１つにchecked属性を指定することができる -->
-    <button v-on:click="getWeather()">Get Weather</button>
-    <!-- 子コンポーネントで親のメソッドを呼びたい時、.nativeをつける -->
-    <!-- methodsのときは（）をつける -->
     <pre> {{ $data }} </pre>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>

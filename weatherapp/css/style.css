@@ -1,0 +1,33 @@
+@charset "UTF-8";
+
+html {
+    font-size: 100%;
+}
+
+body {
+    text-align: center;
+    color: #333333;
+}
+
+a {
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+}
+
+/*ファーストビュー画像*/
+.big-bg {
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+ul {
+    list-style: none;
+}
+
+.select_city{
+    background-color: aquamarine;
+}
