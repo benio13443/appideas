@@ -13,7 +13,7 @@
       <h1>Weather App</h1>
       <select v-model="selectedCity">
         <option disabled value="">Select</option>
-        <option v-for="selectedCity in cities">{{ selectedCity }}</option>
+        <option v-for="city in cities">{{ city }}</option>
       </select>
       <button v-on:click="getWeather()">Get Weather</button>
       <!-- methodsのときは（）をつける -->
@@ -44,15 +44,21 @@
         condition: {
           main: null
         },
+        selectedCity: null,
       },
       methods: {
+        data(){
+          return{
+            selectedCity: this.cities
+          }
+        },
         getWeather: function (event) {
           var getUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
           var getParam = ",jp&units=metric&appid=b10746358fef8f5d35507f4fd9a84816";
-          getUrl = getUrl + this.cities[0] + getParam;
+          getUrl = getUrl + this.selectedCity + getParam;
           axios.get(getUrl)
             .then(function (response) {
-              this.cities[0] = response.data.name
+              this.selectedCity = response.data.name
               this.temp = response.data.main.temp
               this.condition = response.data.weather[0]
               console.log(response);
