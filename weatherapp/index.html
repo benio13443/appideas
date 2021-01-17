@@ -5,33 +5,42 @@
   <meta charset="utf-8">
   <title>Weather App</title>
   <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
+  <link href="css/style.css" rel="stylesheet">
 </head>
 
 <body>
   <div id="app">
-    <div class="select_city">
+    <div class="header">
       <h1>Weather App</h1>
-      <select v-model="selectedCity">
-        <option disabled value="">Select</option>
-        <option v-for="city in cities">{{ city }}</option>
-      </select>
-      <button v-on:click="getWeather()">Get Weather</button>
-      <!-- methodsのときは（）をつける -->
+      <div class="select_city">
+        <select v-model="selectedCity">
+          <option disabled value="">Select</option><img src="img/icon.png" alt="icon">
+          <option v-for="city in cities">{{ city }}</option>
+        </select>
+        <button v-on:click="getWeather()" class="get_button">Get</button>
+        <!-- methodsのときは（）をつける -->
+      </div>
     </div>
 
-    <div class="weather" v-if="getWeather">
+    <div class="weather_result" v-if="show">
       <!-- getWeatherが呼ばれたら天気を表示する -->
-      <p class="weather_city">
-        {{ selectedCity }}
-      </p>
-      <p class="weather_info">
-        {{ condition.main }}
-      </p>
-      <p class="weather_temp" v-if="getWeather">
-        {{ temp }}&#8451;
-      </p>
+      <div class="weather_info">
+        <p class="weather_city">
+          {{ selectedCity }}
+        </p>
+        <p class="weather_temp">
+          {{ temp }}°
+          <!-- &#8451; -->
+        </p>
+        <p class="weather_condition">
+          {{ condition.main }}
+        </p>
+        <!-- <p v-if="condition.main == 'Rain'" class="rain"><img src="img/rain.jpg" alt="Rainy"></p>
+        <p v-else-if="condition.main == 'Clouds'" class="cloudy"><img src="img/cloudy.jpg" alt="Cloudy"></p>
+        <p v-else-if="condition.main == 'Clear'" class="sunny"><img src="img/sunny.jpg" alt="Sunny"></p>
+        <p v-else class="sunset"><img src="img/sunset.jpg" alt="Sunset"></p> -->
+      </div>
     </div>
-    <pre> {{ $data }} </pre>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"></script>
@@ -39,19 +48,20 @@
     var app = new Vue({
       el: '#app',
       data: {
-        cities: [Tokyo,Osaka,Oita,Okinawa],
+        cities: ["Tokyo", "Osaka", "Oita", "Okinawa"],
         temp: null,
         condition: {
           main: null
         },
-        selectedCity: null,
+        selectedCity: "",
+        show: false
       },
       methods: {
-        data(){
-          return{
-            selectedCity: this.cities
-          }
-        },
+        // data(){
+        //   return{
+        //     selectedCity: this.cities
+        //   }
+        // },
         getWeather: function (event) {
           var getUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
           var getParam = ",jp&units=metric&appid=b10746358fef8f5d35507f4fd9a84816";
@@ -59,7 +69,7 @@
           axios.get(getUrl)
             .then(function (response) {
               this.selectedCity = response.data.name
-              this.temp = response.data.main.temp
+              this.temp = Math.floor(response.data.main.temp)
               this.condition = response.data.weather[0]
               console.log(response);
             }.bind(this))
@@ -68,8 +78,9 @@
             })
           console.log(event);
           if (this.city == "") {
-          return;
-        }
+            return;
+          };
+          this.show = !this.show
         }
       }
     })
