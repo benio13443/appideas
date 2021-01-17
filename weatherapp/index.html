@@ -13,7 +13,7 @@
       <h1>Weather App</h1>
       <select v-model="selectedCity">
         <option disabled value="">Select</option>
-        <option v-for="(city, index) in cities">{{ city }}</option>
+        <option v-for="selectedCity in cities">{{ selectedCity }}</option>
       </select>
       <button v-on:click="getWeather()">Get Weather</button>
       <!-- methodsのときは（）をつける -->
@@ -44,7 +44,6 @@
         condition: {
           main: null
         },
-        selectedCity: null
       },
       methods: {
         getWeather: function (event) {
