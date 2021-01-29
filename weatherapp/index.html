@@ -3,6 +3,7 @@
 
 <head>
   <meta charset="utf-8">
+  <meta name="viewport" content="width=divice-width, initial-scale=1">
   <title>Weather App</title>
   <link rel="stylesheet" href="https://unpkg.com/ress/dist/ress.min.css">
   <link href="css/style.css" rel="stylesheet">
@@ -15,6 +16,7 @@
       <div class="select_city">
         <select v-model="selectedCity">
           <option disabled value="">Select</option><img src="img/icon.png" alt="icon">
+          <!-- ???アイコンが表示されない -->
           <option v-for="city in cities">{{ city }}</option>
         </select>
         <button v-on:click="getWeather()" class="get_button">Get</button>
@@ -35,10 +37,10 @@
         <p class="weather_condition">
           {{ condition.main }}
         </p>
-        <!-- <p v-if="condition.main == 'Rain'" class="rain"><img src="img/rain.jpg" alt="Rainy"></p>
-        <p v-else-if="condition.main == 'Clouds'" class="cloudy"><img src="img/cloudy.jpg" alt="Cloudy"></p>
-        <p v-else-if="condition.main == 'Clear'" class="sunny"><img src="img/sunny.jpg" alt="Sunny"></p>
-        <p v-else class="sunset"><img src="img/sunset.jpg" alt="Sunset"></p> -->
+        <div v-bind:class="{rain:condition.main}"></div>
+        <div v-bind:class="{cloudy:condition.main}"></div>
+        <div v-bind:class="{clear:condition.main}"></div>
+        <div v-bind:class="{sunset:condition.main}"></div>
       </div>
     </div>
   </div>
