@@ -37,10 +37,8 @@
         <p class="weather_condition">
           {{ condition.main }}
         </p>
-        <div v-bind:class="{rain:condition.main}"></div>
-        <div v-bind:class="{cloudy:condition.main}"></div>
-        <div v-bind:class="{clear:condition.main}"></div>
-        <div v-bind:class="{sunset:condition.main}"></div>
+        <div v-bind:class="[condition.main, 'weather_result']"></div>
+        <!-- データを参照するときは"”は要らない -->
       </div>
     </div>
   </div>
