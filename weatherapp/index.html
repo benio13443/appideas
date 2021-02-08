@@ -23,7 +23,6 @@
         <!-- methodsのときは（）をつける -->
       </div>
     </div>
-
     <div class="weather_result" v-if="show">
       <!-- getWeatherが呼ばれたら天気を表示する -->
       <div class="weather_info">
@@ -37,9 +36,9 @@
         <p class="weather_condition">
           {{ condition.main }}
         </p>
-        <div v-bind:class="[condition.main, 'weather_result']"></div>
         <!-- データを参照するときは"”は要らない -->
       </div>
+      <div v-bind:class="[condition.main, 'weather_result']"></div>
     </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
@@ -57,11 +56,6 @@
         show: false
       },
       methods: {
-        // data(){
-        //   return{
-        //     selectedCity: this.cities
-        //   }
-        // },
         getWeather: function (event) {
           var getUrl = "https://api.openweathermap.org/data/2.5/weather?q=";
           var getParam = ",jp&units=metric&appid=b10746358fef8f5d35507f4fd9a84816";
