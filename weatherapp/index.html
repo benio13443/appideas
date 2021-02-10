@@ -22,9 +22,9 @@
         <button v-on:click="getWeather()" class="get_button">Get</button>
         <!-- methodsのときは（）をつける -->
       </div>
-    </div>
     <div class="weather_result" v-if="show">
       <!-- getWeatherが呼ばれたら天気を表示する -->
+      <div v-bind:class="[condition.main, 'weather_result']">
       <div class="weather_info">
         <p class="weather_city">
           {{ selectedCity }}
@@ -38,8 +38,9 @@
         </p>
         <!-- データを参照するときは"”は要らない -->
       </div>
-      <div v-bind:class="[condition.main, 'weather_result']"></div>
     </div>
+    </div>
+  </div>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.17/dist/vue.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios@0.18.0/dist/axios.min.js"></script>
