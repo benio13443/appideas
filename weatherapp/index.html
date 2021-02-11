@@ -22,9 +22,8 @@
         <button v-on:click="getWeather()" class="get_button">Get</button>
         <!-- methodsのときは（）をつける -->
       </div>
-    <div class="weather_result" v-if="show">
       <!-- getWeatherが呼ばれたら天気を表示する -->
-      <div v-bind:class="[condition.main, 'weather_result']">
+      <div v-bind:class="[condition.main, 'weather_result']" v-if="show">
       <div class="weather_info">
         <p class="weather_city">
           {{ selectedCity }}
